@@ -1,45 +1,77 @@
-import React, { useEffect, useState } from "react";
-import FormInput from "./FormInput";
+// React imports
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+import { useForm, Controller } from "react-hook-form";
+// Components
+import FormSelect from "./FormSelect";
 import FormButton from "./FormButton";
-import { messages } from "../constants.js";
+import FormInput from "./FormInput";
+// Helpers
+import messages from "../constants.js";
+import { createRandomId } from "../util.js";
 
-const { title, input, button } = messages;
+const { title, input, button, skillOptions } = messages;
 
-const CreateEmployee = () => {
-  // Business logic
-  const handleInputChange = (name, value) => {
-    console.log(name);
-    console.log(value);
+export default function CreateEmployee() {
+  // Initial form values
+  const defaultValues = {
+    id: null,
+    firstname: "",
+    lastname: "",
+    skills: [],
   };
 
-  // Props
+  // Hooks
+  const { handleSubmit, reset, control } = useForm({ defaultValues });
+  const [data, setData] = useState(null);
+
+  const onSubmit = (data) => {
+    data.id = createRandomId();
+    setData(data);
+    console.log(data);
+  };
+
+  // Props for return
+  const buttonResetProps = {
+    size: "small",
+    variant: "contained",
+    onClick: () => {
+      reset(defaultValues);
+    },
+  };
+  const buttonSubmitProps = {
+    size: "small",
+    type: "submit",
+    variant: "contained",
+    className: "button-submit",
+  };
   const firstNameProps = {
+    control,
     name: "firstname",
     placeholder: input.firstName,
   };
   const lastNameProps = {
+    control,
     name: "lastname",
     placeholder: input.lastName,
   };
-  const inputProps = {
-    onChange: handleInputChange,
-    type: "text",
-  };
-  const buttonProps = {
-    size: "small",
-    variant: "contained",
-  };
+
+  const renderForm = (
+    <form onSubmit={handleSubmit(onSubmit)} className="form">
+      <div className="container">
+        <FormInput {...firstNameProps} />
+        <FormInput {...lastNameProps} />
+        <FormSelect control={control} />
+      </div>
+      <FormButton {...buttonResetProps}>{button.reset}</FormButton>
+      <FormButton {...buttonSubmitProps}>{button.submit}</FormButton>
+    </form>
+  );
 
   return (
-    <div>
-      <h1>{title.createEmployee}</h1>
-      <form>
-        <FormInput {...inputProps} {...firstNameProps} />
-        <FormInput {...inputProps} {...lastNameProps} />
-        <FormButton {...buttonProps}>{button.submit}</FormButton>
-      </form>
-    </div>
+    <>
+      <h2>{title.createEmployee}</h2>
+      {renderForm}
+    </>
   );
-};
-
-export default CreateEmployee;
+}

@@ -1,14 +1,40 @@
+// React imports
 import React from "react";
+// Material UI imports
 import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
 
-const FormButton = ({ size, variant, className, children }) => {
+const FormButton = ({
+  // Style
+  size,
+  variant,
+  className,
+  type,
+
+  // Button children
+  children,
+
+  // Action
+  onClick,
+}) => {
+  // Props for return
   const buttonProps = {
     variant,
-    className: `btn-${variant} btn-${size}`,
+    className: `${className} btn-${variant} btn-${size}`,
     size,
+    type,
   };
 
-  return <Button {...buttonProps}>{children}</Button>;
+  if (onClick) {
+    buttonProps.onClick = onClick;
+  }
+
+  // JSX
+  return (
+    <Box m={1} display="inline">
+      <Button {...buttonProps}>{children}</Button>
+    </Box>
+  );
 };
 
 export default FormButton;

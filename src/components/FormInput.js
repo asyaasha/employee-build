@@ -1,34 +1,28 @@
+// React imports
 import React, { useState } from "react";
-import Input from "@material-ui/core/Input";
+import { Controller } from "react-hook-form";
+// Material UI imports
+import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
+import FormControl from "@material-ui/core/FormControl";
 
-const FormInput = ({ name, onChange, placeholder, inputType }) => {
-  // Hooks
-  const [inputValue, setInputValue] = useState("");
-
-  // Business logic
-  const handleChange = (event) => {
-    setInputValue(event.target.value);
-
-    if (onChange) onChange(name, inputValue);
-  };
-
-  // Props
+const FormInput = ({ control, name, placeholder }) => {
+  // Props for return
   const boxProps = {
-    m: 2,
     display: "flex",
+    m: 2,
   };
-  const inputProps = {
+  const controllerProps = {
+    as: <TextField placeholder={placeholder} />,
+    control,
     name,
-    onChange: handleChange,
-    placeholder,
-    type: inputType,
-    value: inputValue,
   };
 
   return (
     <Box {...boxProps}>
-      <Input {...inputProps} />
+      <FormControl required={true}>
+        <Controller {...controllerProps} />
+      </FormControl>
     </Box>
   );
 };

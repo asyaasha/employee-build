@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel src/index.html",
+    "dev": "parcel src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "asiya",
@@ -18,7 +19,11 @@
     "lib": "^4.1.2",
     "react": "^16.13.1",
     "react-apollo": "^3.1.5",
+    "react-datepicker": "^2.14.1",
     "react-dom": "^16.13.1",
+    "react-hook-form": "^5.6.0",
+    "react-number-format": "^4.4.1",
+    "react-select": "^3.1.0",
     "typeface-roboto": "0.0.75"
   },
   "devDependencies": {
