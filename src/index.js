@@ -1,15 +1,27 @@
-import App from "./App";
+import React from "react";
+import ReactDOM from "react-dom";
+import Amplify from "aws-amplify";
+import App from "./components/App";
 import gql from "graphql-tag";
 import AWSAppSyncClient, { AUTH_TYPE } from "aws-appsync";
-import aws_config from "./aws-exports";
+import awsExports from "./aws-exports";
+
+import { ApolloProvider } from "react-apollo";
+
+Amplify.configure(awsExports);
 
 const client = new AWSAppSyncClient({
-  url: aws_config.aws_appsync_graphqlEndpoint,
-  region: aws_config.aws_appsync_region,
+  url: awsExports.aws_appsync_graphqlEndpoint,
+  region: awsExports.aws_appsync_region,
   auth: {
     type: AUTH_TYPE.API_KEY,
-    apiKey: aws_config.aws_appsync_apiKey,
+    apiKey: awsExports.aws_appsync_apiKey,
   },
 });
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById("root")
+);
