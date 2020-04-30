@@ -1,0 +1,12 @@
+type Employee @model {
+  id: ID!
+  firstname: String!
+  lastname: String!
+  skills: [Skill] @connection(name: "EmployeeSkill")
+}
+
+type Skill @model {
+  id: ID!
+  name: String!
+  employee: Employee @connection(name: "EmployeeSkill")
+}
