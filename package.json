@@ -10,7 +10,10 @@
   "author": "asiya",
   "license": "ISC",
   "dependencies": {
+    "aws-appsync": "^3.0.3",
+    "graphql-tag": "^2.10.3",
     "react": "^16.13.1",
+    "react-apollo": "^3.1.5",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
