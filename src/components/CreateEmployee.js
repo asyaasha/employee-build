@@ -9,6 +9,10 @@ import FormInput from "./FormInput";
 // Helpers
 import messages from "../constants.js";
 import { createRandomId } from "../util.js";
+// GraphQL imports
+import { Mutation } from "react-apollo";
+import { createEmployee } from "../graphql/mutations";
+import gql from "graphql-tag";
 
 const { title, input, button, skillOptions } = messages;
 
@@ -26,9 +30,14 @@ export default function CreateEmployee() {
   const [data, setData] = useState(null);
 
   const onSubmit = (data) => {
-    data.id = createRandomId();
-    setData(data);
+    //data.id = createRandomId();
+    //event.preventDefault();
+    setData(event.target.value);
+    console.log("data");
     console.log(data);
+    console.log("event");
+    console.log(event);
+    console.log(event.target);
   };
 
   // Props for return
@@ -71,7 +80,61 @@ export default function CreateEmployee() {
   return (
     <>
       <h2>{title.createEmployee}</h2>
-      {renderForm}
+      <Mutation mutation={gql(createEmployee)}>
+        {(createEmployee, { data, loading, error }) => {
+          return (
+            <div>
+              <form
+                onSubmit={handleSubmit((data) => {
+                  console.log(data);
+                  setData(data);
+                  createSkill({
+                    id: createRandomId(),
+                    name: data.skills[0],
+                  }).then((res) => {
+                    // reset values
+                    console.log("res");
+                    alert(JSON.stringify(res.data));
+                    // createEmployee({
+                    //   variables: {
+                    //     input: {
+                    //       id: createRandomId(),
+                    //       firstname: data.firstname,
+                    //       lastname: data.lastname,
+                    //       skills: {
+                    //         items: {
+                    //           id: createRandomId(),
+                    //           name: data.skills[0],
+                    //         },
+                    //         items: {
+                    //           id: createRandomId(),
+                    //           name: data.skills[1],
+                    //         },
+                    //       },
+                    //     },
+                    //   },
+                    // }).then((res) => {
+                    //   // reset values
+                    //   console.log("res");
+                    //   alert(JSON.stringify(res.data));
+                    // });
+                  });
+                })}
+                className="form"
+              >
+                <div className="container">
+                  <FormInput {...firstNameProps} />
+                  <FormInput {...lastNameProps} />
+                  <FormSelect control={control} />
+                </div>
+                <FormButton {...buttonResetProps}>{button.reset}</FormButton>
+                <FormButton {...buttonSubmitProps}>{button.submit}</FormButton>
+              </form>
+              {error && <p>{error.message}</p>}
+            </div>
+          );
+        }}
+      </Mutation>
     </>
   );
 }

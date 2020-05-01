@@ -8,11 +8,8 @@ export const onCreateEmployee = /* GraphQL */ `
       firstname
       lastname
       skills {
-        items {
-          id
-          name
-        }
-        nextToken
+        id
+        name
       }
     }
   }
@@ -24,11 +21,8 @@ export const onUpdateEmployee = /* GraphQL */ `
       firstname
       lastname
       skills {
-        items {
-          id
-          name
-        }
-        nextToken
+        id
+        name
       }
     }
   }
@@ -40,11 +34,8 @@ export const onDeleteEmployee = /* GraphQL */ `
       firstname
       lastname
       skills {
-        items {
-          id
-          name
-        }
-        nextToken
+        id
+        name
       }
     }
   }
@@ -54,14 +45,6 @@ export const onCreateSkill = /* GraphQL */ `
     onCreateSkill {
       id
       name
-      employee {
-        id
-        firstname
-        lastname
-        skills {
-          nextToken
-        }
-      }
     }
   }
 `;
@@ -70,14 +53,6 @@ export const onUpdateSkill = /* GraphQL */ `
     onUpdateSkill {
       id
       name
-      employee {
-        id
-        firstname
-        lastname
-        skills {
-          nextToken
-        }
-      }
     }
   }
 `;
@@ -86,14 +61,6 @@ export const onDeleteSkill = /* GraphQL */ `
     onDeleteSkill {
       id
       name
-      employee {
-        id
-        firstname
-        lastname
-        skills {
-          nextToken
-        }
-      }
     }
   }
 `;
