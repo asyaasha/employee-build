@@ -8,7 +8,7 @@ import FormButton from "./FormButton";
 import FormInput from "./FormInput";
 // Helpers
 import messages from "../constants.js";
-import { createRandomId } from "../util.js";
+import { generateId } from "../util.js";
 
 const { title, input, button, skillOptions } = messages;
 
@@ -26,7 +26,7 @@ export default function CreateEmployee() {
   const [data, setData] = useState(null);
 
   const onSubmit = (data) => {
-    data.id = createRandomId();
+    data.id = generateId();
     setData(data);
     console.log(data);
   };

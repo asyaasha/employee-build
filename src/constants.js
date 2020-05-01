@@ -1,6 +1,7 @@
 const messages = {
   title: {
     createEmployee: "Create Employee",
+    employeesTable: "Employees Table",
   },
   input: {
     firstName: "First Name",
