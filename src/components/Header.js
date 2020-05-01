@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import Grid from "@material-ui/core/Grid";
+import Tooltip from "@material-ui/core/Tooltip";
 
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -17,6 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   root: { background: "#659BDB" },
   icon: {
+    boxShadow: "none",
     color: "white",
   },
   typoLight: {
@@ -56,14 +58,16 @@ const Header = () => {
           </Grid>
           <Grid item>
             <Link to="/create">
-              <IconButton
-                className={classes.icon}
-                size="medium"
-                edge="end"
-                aria-label="icon"
-              >
-                <PersonAddIcon />
-              </IconButton>
+              <Tooltip title="Add Employee" aria-label="add-employee">
+                <IconButton
+                  className={classes.icon}
+                  size="medium"
+                  edge="end"
+                  aria-label="icon"
+                >
+                  <PersonAddIcon />
+                </IconButton>
+              </Tooltip>
             </Link>
           </Grid>
         </Grid>

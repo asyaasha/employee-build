@@ -88,13 +88,12 @@ const TableEmployee = () => {
     },
   ];
 
-  // Props
+  // Props for return
   const tableProps = {
-    title: title.employeesTable,
+    actions,
     columns: state.columns,
     className: classes.chip,
     data: state.data,
-    actions: actions,
     editable: {
       onRowDelete: (oldData) =>
         new Promise((resolve) => {
@@ -108,6 +107,7 @@ const TableEmployee = () => {
           }, 600);
         }),
     },
+    title: title.employeesTable,
   };
 
   return <MaterialTable {...tableProps} />;

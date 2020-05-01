@@ -5,15 +5,18 @@ import { Switch, Route } from "react-router-dom";
 import CreateEmployee from "./CreateEmployee";
 import TableEmployee from "./TableEmployee";
 import Header from "./Header";
+import Box from "@material-ui/core/Box";
 
 const App = () => {
   return (
     <>
       <Header />
-      <Switch>
-        <Route exact path="/" component={TableEmployee} />
-        <Route exact path="/create" component={CreateEmployee} />
-      </Switch>
+      <Box m={3}>
+        <Switch>
+          <Route exact path="/" component={TableEmployee} />
+          <Route exact path="/create" component={CreateEmployee} />
+        </Switch>
+      </Box>
     </>
   );
 };
