@@ -1,12 +1,14 @@
 const messages = {
   title: {
     createEmployee: "Create Employee",
+    createSkill: "Create Skill",
     employeesTable: "EMPLOYEES",
   },
   input: {
     firstName: "First Name",
     lastName: "Last Name",
     skills: "Skills",
+    skillName: "Skill Name",
   },
   button: {
     reset: "Reset",
