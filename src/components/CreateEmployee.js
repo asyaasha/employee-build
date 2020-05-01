@@ -8,11 +8,11 @@ import FormButton from "./FormButton";
 import FormInput from "./FormInput";
 // Helpers
 import messages from "../constants.js";
-import { createRandomId } from "../util.js";
 // GraphQL imports
 import { Mutation } from "react-apollo";
 import { createEmployee } from "../graphql/mutations";
 import gql from "graphql-tag";
+import { generateId } from "../util.js";
 
 const { title, input, button, skillOptions } = messages;
 
@@ -30,10 +30,7 @@ export default function CreateEmployee() {
   const [data, setData] = useState(null);
 
   const onSubmit = (data) => {
-    //data.id = createRandomId();
-    //event.preventDefault();
-    setData(event.target.value);
-    console.log("data");
+    setData(data);
     console.log(data);
     console.log("event");
     console.log(event);
