@@ -1,7 +1,7 @@
 const messages = {
   title: {
-    createEmployee: "Create Employee",
-    createSkill: "Create Skill",
+    createEmployee: "New Employee",
+    createSkill: "New Skill",
     employeesTable: "EMPLOYEES",
   },
   input: {
@@ -14,11 +14,6 @@ const messages = {
     reset: "Reset",
     submit: "Submit",
   },
-  skillOptions: [
-    { value: "react", label: "React" },
-    { value: "node", label: "Node" },
-    { value: "vanilla", label: "Vanilla" },
-  ],
 };
 
 export default messages;
