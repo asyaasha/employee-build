@@ -1,4 +1,4 @@
-const messages = {
+export const messages = {
   title: {
     createEmployee: "New Employee",
     createSkill: "New Skill",
@@ -14,6 +14,19 @@ const messages = {
     reset: "Reset",
     submit: "Submit",
   },
+  form: {
+    loading: "Loading...",
+  },
 };
 
-export default messages;
+export const skillDefaultValues = {
+  id: null,
+  name: "",
+};
+
+export const employeeDefaultValues = {
+  id: null,
+  firstname: "",
+  lastname: "",
+  skills: [],
+};

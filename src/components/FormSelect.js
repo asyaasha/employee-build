@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import { Controller } from "react-hook-form";
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -7,7 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
-import messages from "../constants.js";
+import { messages } from "../constants.js";
 
 // name messages
 const { input } = messages;
@@ -22,34 +22,26 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2),
     minWidth: 140,
     maxWidth: 400,
-    textTransform: "capitalize",
+    textTransform: "uppercase",
   },
 }));
 const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: HEIGHT * 4.5 + PADDING_TOP,
-      textTransform: "capitalize",
+      textTransform: "uppercase",
       width: 250,
     },
   },
 };
 
 const FormSelect = ({ control, data }) => {
-  // Hooks
-  const classes = useStyles();
-  const [optionNames, setOptionNames] = useState([]);
   const { listSkills } = data;
-
-  // Business logic
-  const handleChange = (event) => {
-    setOptionNames(event.target.value);
-  };
+  const classes = useStyles();
 
   // Props for return
   const selectProps = {
-    value: optionNames,
-    onChange: handleChange,
+    value: [],
     input: <Input />,
     MenuProps: MenuProps,
   };
@@ -59,7 +51,7 @@ const FormSelect = ({ control, data }) => {
       <InputLabel>{input.skills}</InputLabel>
       <Controller
         as={
-          <Select {...selectProps} multiple>
+          <Select {...selectProps} multiple displayEmpty>
             {listSkills.items.map((option) => {
               if (option) {
                 return (

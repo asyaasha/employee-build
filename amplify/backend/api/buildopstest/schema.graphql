@@ -2,10 +2,22 @@ type Employee @model {
   id: ID!
   firstname: String!
   lastname: String!
-  skills: [Skill!]
+  skills: [SkillUser] @connection(keyName: "byUser", fields: ["id"])
+}
+
+type SkillUser
+  @model(queries: null)
+  @key(name: "bySkill", fields: ["skillID", "userID"])
+  @key(name: "byUser", fields: ["userID", "skillID"]) {
+  id: ID!
+  skillID: ID!
+  userID: ID!
+  skill: Skill! @connection(fields: ["skillID"])
+  user: Employee! @connection(fields: ["userID"])
 }
 
 type Skill @model {
   id: ID!
   name: String!
+  employees: [SkillUser] @connection(keyName: "bySkill", fields: ["id"])
 }

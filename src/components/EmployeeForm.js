@@ -1,5 +1,6 @@
 // React imports
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 // Components
 import FormSelect from "./FormSelect";
@@ -11,32 +12,23 @@ import { Query } from "react-apollo";
 import { listSkills } from "../graphql/queries";
 import gql from "graphql-tag";
 // Helpers
-import messages from "../constants.js";
-import generateId from "../util.js";
+import { messages } from "../constants.js";
 
 const { input, button } = messages;
 
-const EmployeeForm = ({ data, loading, submitAction, actionType, title }) => {
-  // Initial form values
-  const defaultValues = {
-    id: null,
-    firstname: "",
-    lastname: "",
-    skills: [],
-  };
-
+const EmployeeForm = ({
+  data,
+  loading,
+  submitAction,
+  mutationEmployee,
+  mutationSkillLink,
+  defaultValues,
+  title,
+}) => {
   // Hooks
   const { handleSubmit, reset, control } = useForm({ defaultValues });
 
   // Props for return
-  const buttonResetProps = {
-    color: "secondary",
-    size: "small",
-    variant: "outlined",
-    onClick: () => {
-      reset(defaultValues);
-    },
-  };
   const buttonSubmitProps = {
     className: "button-submit",
     color: "primary",
@@ -60,7 +52,12 @@ const EmployeeForm = ({ data, loading, submitAction, actionType, title }) => {
       {({ loading, data, error }) => {
         if (loading) return <p>loading...</p>;
         if (error) return <p>{error.message}</p>;
-        return <FormSelect control={control} data={data} />;
+        return (
+          <FormSelect
+            control={control}
+            data={data || { listSkills: { items: [] } }}
+          />
+        );
       }}
     </Query>
   );
@@ -71,21 +68,27 @@ const EmployeeForm = ({ data, loading, submitAction, actionType, title }) => {
       <div>
         <form
           onSubmit={handleSubmit((data) => {
-            //submitAction(actionType);
-            // reset values
-            console.log("res");
-            alert(JSON.stringify(data));
+            submitAction(data, mutationEmployee, mutationSkillLink, reset);
           })}
         >
           <FormInput {...firstNameProps} />
           <FormInput {...lastNameProps} />
           {renderSkillsMenu}
-          <FormButton {...buttonSubmitProps}>{button.submit}</FormButton>
-          <FormButton {...buttonResetProps}>{button.reset}</FormButton>
+          <div>
+            <FormButton {...buttonSubmitProps}>{button.submit}</FormButton>
+          </div>
         </form>
       </div>
     </>
   );
+};
+
+EmployeeForm.propTypes = {
+  mutationEmployee: PropTypes.object.isRequired,
+  mutationSkillLink: PropTypes.object,
+  loading: PropTypes.bool,
+  submitAction: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default EmployeeForm;

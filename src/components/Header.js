@@ -6,7 +6,6 @@ import AppBar from "@material-ui/core/AppBar";
 import FaceIcon from "@material-ui/icons/Face";
 import IconButton from "@material-ui/core/IconButton";
 import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import Grid from "@material-ui/core/Grid";
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   typoDark: {
     fontWeight: "bold",
-    color: "#FBEEC1",
+    color: "bisque",
   },
   linkButton: {
     minWidth: 650,

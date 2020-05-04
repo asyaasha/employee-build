@@ -1,5 +1,5 @@
 // React imports
-import React, { useState } from "react";
+import React from "react";
 import { Controller } from "react-hook-form";
 // Material UI imports
 import TextField from "@material-ui/core/TextField";

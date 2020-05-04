@@ -8,8 +8,12 @@ export const onCreateEmployee = /* GraphQL */ `
       firstname
       lastname
       skills {
-        id
-        name
+        items {
+          id
+          skillID
+          userID
+        }
+        nextToken
       }
     }
   }
@@ -21,8 +25,12 @@ export const onUpdateEmployee = /* GraphQL */ `
       firstname
       lastname
       skills {
-        id
-        name
+        items {
+          id
+          skillID
+          userID
+        }
+        nextToken
       }
     }
   }
@@ -34,8 +42,84 @@ export const onDeleteEmployee = /* GraphQL */ `
       firstname
       lastname
       skills {
+        items {
+          id
+          skillID
+          userID
+        }
+        nextToken
+      }
+    }
+  }
+`;
+export const onCreateSkillUser = /* GraphQL */ `
+  subscription OnCreateSkillUser {
+    onCreateSkillUser {
+      id
+      skillID
+      userID
+      skill {
         id
         name
+        employees {
+          nextToken
+        }
+      }
+      user {
+        id
+        firstname
+        lastname
+        skills {
+          nextToken
+        }
+      }
+    }
+  }
+`;
+export const onUpdateSkillUser = /* GraphQL */ `
+  subscription OnUpdateSkillUser {
+    onUpdateSkillUser {
+      id
+      skillID
+      userID
+      skill {
+        id
+        name
+        employees {
+          nextToken
+        }
+      }
+      user {
+        id
+        firstname
+        lastname
+        skills {
+          nextToken
+        }
+      }
+    }
+  }
+`;
+export const onDeleteSkillUser = /* GraphQL */ `
+  subscription OnDeleteSkillUser {
+    onDeleteSkillUser {
+      id
+      skillID
+      userID
+      skill {
+        id
+        name
+        employees {
+          nextToken
+        }
+      }
+      user {
+        id
+        firstname
+        lastname
+        skills {
+          nextToken
+        }
       }
     }
   }
@@ -45,6 +129,14 @@ export const onCreateSkill = /* GraphQL */ `
     onCreateSkill {
       id
       name
+      employees {
+        items {
+          id
+          skillID
+          userID
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -53,6 +145,14 @@ export const onUpdateSkill = /* GraphQL */ `
     onUpdateSkill {
       id
       name
+      employees {
+        items {
+          id
+          skillID
+          userID
+        }
+        nextToken
+      }
     }
   }
 `;
@@ -61,6 +161,14 @@ export const onDeleteSkill = /* GraphQL */ `
     onDeleteSkill {
       id
       name
+      employees {
+        items {
+          id
+          skillID
+          userID
+        }
+        nextToken
+      }
     }
   }
 `;
