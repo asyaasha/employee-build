@@ -33,20 +33,20 @@ const createEmployeeAction = (data, createEmployee, createLink, reset) => {
         });
       };
       // Create connections to an employee for all selected skills
-      let promises = data.skills.map((skill) => {
-        return graphqlCreateSkillLink(skill).then((e) => {
-          console.log(e);
-          return e;
-        });
-      });
-      Promise.all(promises)
-        .then((results) => {
-          // reset form to default
-          reset(employeeDefaultValues);
-        })
-        .catch((e) => {
-          console.error(e);
-        });
+      // let promises = data.skills.map((skill) => {
+      //   return graphqlCreateSkillLink(skill).then((e) => {
+      //     console.log(e);
+      //     return e;
+      //   });
+      // });
+      // Promise.all(promises)
+      //   .then((results) => {
+      //     // reset form to default
+      //     reset(employeeDefaultValues);
+      //   })
+      //   .catch((e) => {
+      //     console.error(e);
+      //   });
     })
     .catch((error) => console.log("error" + error));
 };

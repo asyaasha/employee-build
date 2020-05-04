@@ -1,11 +1,10 @@
 // React imports
-import React from "react";
+import React, { useState } from "react";
 // Material UI imports
 import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import Chip from "@material-ui/core/Chip";
 // GraphQL imports
-import { Query, Mutation } from "react-apollo";
 import { useQuery, useMutation } from "react-apollo";
 import { listEmployees } from "../graphql/queries";
 import { deleteEmployee as deleteEmployeeMutation } from "../graphql/mutations";
@@ -28,11 +27,11 @@ const useStyles = makeStyles((theme) => ({
 
 const TableEmployeeComponent = () => {
   const classes = useStyles();
-  // apollo react hooks
+  // react apollo hooks
   const { loading, data, error } = useQuery(gql(listEmployees));
   const [deleteEmployee] = useMutation(gql(deleteEmployeeMutation));
 
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     columns: [
       {
         title: "ID",
@@ -92,27 +91,50 @@ const TableEmployeeComponent = () => {
   });
 
   // Business logic
+  const removeEmployee = (selectedEmployee) => {
+    // Update UI
+    const updateCache = (client) => {
+      const data = client.readQuery({
+        query: gql(listEmployees),
+      });
+      const newItems = data.listEmployees.items.filter(
+        (employee) => employee.id !== selectedEmployee.id
+      );
+      client.writeQuery({
+        query: gql(listEmployees),
+        data: {
+          listEmployees: { ...data.listEmployees, items: newItems },
+        },
+      });
+    };
+    // Remove from the db
+    deleteEmployee({
+      variables: {
+        input: {
+          id: selectedEmployee.id,
+        },
+      },
+      update: updateCache,
+    });
+  };
+
+  const updateEmployee = () => {
+    // TODO add edit action
+  };
+
   const actions = [
     {
       icon: "edit",
       tooltip: "Edit",
       onClick: (event, rowData) => {
-        // TODO edit action
-        console.log(JSON.stringify(rowData));
+        updateEmployee(rowData);
       },
     },
     {
       icon: "delete",
       tooltip: "Delete",
       onClick: (event, rowData) => {
-        deleteEmployee({
-          variables: {
-            input: {
-              id: rowData.id,
-            },
-          },
-        });
-        // TODO update UI
+        removeEmployee(rowData);
       },
     },
   ];
