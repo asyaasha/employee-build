@@ -1,12 +1,18 @@
+// React imports
 import React from "react";
+// Material UI imports
 import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import Chip from "@material-ui/core/Chip";
-
-import messages from "../constants.js";
+// GraphQL imports
+import { Query } from "react-apollo";
+import { listEmployees } from "../graphql/queries";
+import gql from "graphql-tag";
+// Helpers
+import { messages } from "../constants.js";
 import data from "../mock.js";
 
-const { title, input } = messages;
+const { title, input, form } = messages;
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -15,10 +21,11 @@ const useStyles = makeStyles((theme) => ({
   },
   chip: {
     margin: theme.spacing(0.5),
+    backgroundColor: "bisque",
   },
 }));
 
-const TableEmployee = () => {
+const TableEmployeeComponent = () => {
   const classes = useStyles();
   const [state, setState] = React.useState({
     columns: [
@@ -60,21 +67,24 @@ const TableEmployee = () => {
         render: (rowData) => {
           return (
             <div>
-              {rowData.skills.map((skill) => {
-                return (
-                  <Chip
-                    key={skill.id}
-                    label={skill.name}
-                    className={classes.chip}
-                  />
-                );
-              })}
+              {rowData.skills
+                ? rowData.skills.items.map((item, index) => {
+                    console.log(item);
+                    return (
+                      <Chip
+                        key={`${index}-${item.skill.id}`}
+                        label={item.skill.name.toUpperCase()}
+                        className={classes.chip}
+                      />
+                    );
+                  })
+                : null}
             </div>
           );
         },
       },
     ],
-    data: data.employees,
+    data: [],
   });
 
   // Business logic
@@ -110,7 +120,19 @@ const TableEmployee = () => {
     title: title.employeesTable,
   };
 
-  return <MaterialTable {...tableProps} />;
+  return (
+    <>
+      <Query query={gql(listEmployees)}>
+        {({ loading, data, error }) => {
+          if (loading) return <p>{form.loading}</p>;
+          if (error) return <p>{error.message}</p>;
+          tableProps.data = data.listEmployees.items;
+
+          return <MaterialTable {...tableProps} />;
+        }}
+      </Query>
+    </>
+  );
 };
 
-export default TableEmployee;
+export default TableEmployeeComponent;
