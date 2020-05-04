@@ -5,12 +5,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import Chip from "@material-ui/core/Chip";
 // GraphQL imports
-import { Query } from "react-apollo";
+import { Query, Mutation } from "react-apollo";
+import { useQuery, useMutation } from "react-apollo";
 import { listEmployees } from "../graphql/queries";
+import { deleteEmployee as deleteEmployeeMutation } from "../graphql/mutations";
 import gql from "graphql-tag";
 // Helpers
 import { messages } from "../constants.js";
-import data from "../mock.js";
 
 const { title, input, form } = messages;
 
@@ -27,6 +28,10 @@ const useStyles = makeStyles((theme) => ({
 
 const TableEmployeeComponent = () => {
   const classes = useStyles();
+  // apollo react hooks
+  const { loading, data, error } = useQuery(gql(listEmployees));
+  const [deleteEmployee] = useMutation(gql(deleteEmployeeMutation));
+
   const [state, setState] = React.useState({
     columns: [
       {
@@ -69,7 +74,6 @@ const TableEmployeeComponent = () => {
             <div>
               {rowData.skills
                 ? rowData.skills.items.map((item, index) => {
-                    console.log(item);
                     return (
                       <Chip
                         key={`${index}-${item.skill.id}`}
@@ -93,7 +97,22 @@ const TableEmployeeComponent = () => {
       icon: "edit",
       tooltip: "Edit",
       onClick: (event, rowData) => {
+        // TODO edit action
         console.log(JSON.stringify(rowData));
+      },
+    },
+    {
+      icon: "delete",
+      tooltip: "Delete",
+      onClick: (event, rowData) => {
+        deleteEmployee({
+          variables: {
+            input: {
+              id: rowData.id,
+            },
+          },
+        });
+        // TODO update UI
       },
     },
   ];
@@ -104,35 +123,16 @@ const TableEmployeeComponent = () => {
     columns: state.columns,
     className: classes.chip,
     data: state.data,
-    editable: {
-      onRowDelete: (oldData) =>
-        new Promise((resolve) => {
-          setTimeout(() => {
-            resolve();
-            setState((prevState) => {
-              const data = [...prevState.data];
-              data.splice(data.indexOf(oldData), 1);
-              return { ...prevState, data };
-            });
-          }, 600);
-        }),
-    },
     title: title.employeesTable,
   };
 
-  return (
-    <>
-      <Query query={gql(listEmployees)}>
-        {({ loading, data, error }) => {
-          if (loading) return <p>{form.loading}</p>;
-          if (error) return <p>{error.message}</p>;
-          tableProps.data = data.listEmployees.items;
+  if (loading) return <p>{form.loading}</p>;
+  if (error) return <p>{error.message}</p>;
 
-          return <MaterialTable {...tableProps} />;
-        }}
-      </Query>
-    </>
-  );
+  tableProps.data = data.listEmployees.items;
+
+  // Render table
+  return <MaterialTable {...tableProps} />;
 };
 
 export default TableEmployeeComponent;
