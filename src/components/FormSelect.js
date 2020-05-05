@@ -35,7 +35,7 @@ const MenuProps = {
   },
 };
 
-const FormSelect = ({ control, data }) => {
+const FormSelect = ({ control, data, defaultSkills }) => {
   const { listSkills } = data;
   const classes = useStyles();
 

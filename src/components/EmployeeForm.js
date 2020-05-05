@@ -17,7 +17,6 @@ import { messages } from "../constants.js";
 const { input, button, form } = messages;
 
 const EmployeeForm = ({
-  data,
   loading,
   submitAction,
   mutationEmployee,
@@ -56,8 +55,16 @@ const EmployeeForm = ({
     if (loadingSkills) return <p>{form.loading}</p>;
     if (error) return <p>{error.message}</p>;
 
-    return <FormSelect control={control} data={dataSkills} />;
+    const FormSelectProps = {
+      data: dataSkills,
+      defaultSkills: defaultValues.skills,
+      control: control,
+    };
+
+    return <FormSelect {...FormSelectProps} />;
   };
+
+  if (loading) return <p>{form.loading}</p>;
 
   return (
     <>

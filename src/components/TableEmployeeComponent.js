@@ -1,5 +1,7 @@
 // React imports
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { withRouter } from "react-router";
 // Material UI imports
 import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
@@ -28,13 +30,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TableEmployeeComponent = () => {
+const TableEmployeeComponent = ({ history }) => {
   const classes = useStyles();
   // react apollo hooks
   const { loading, data, error } = useQuery(gql(listEmployees));
-  const [deleteEmployee, { loading: deleting }] = useMutation(
-    gql(deleteEmployeeMutation)
-  );
+  const [deleteEmployee] = useMutation(gql(deleteEmployeeMutation));
   const [deleteSkillUser] = useMutation(gql(deleteSkillUserMutation));
 
   const [state, setState] = useState({
@@ -151,8 +151,9 @@ const TableEmployeeComponent = () => {
       });
   };
 
-  const updateEmployee = () => {
+  const updateEmployee = (rowData) => {
     // TODO add edit action
+    history.push(`update/${rowData.id}`);
   };
 
   const actions = [
@@ -189,4 +190,4 @@ const TableEmployeeComponent = () => {
   return <MaterialTable {...tableProps} />;
 };
 
-export default TableEmployeeComponent;
+export default withRouter(TableEmployeeComponent);

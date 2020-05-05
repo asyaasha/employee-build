@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 const CreateEmployeeComponent = () => {
   // Hooks
   const classes = useStyles();
-  const [createEmployee, { data, loading, error }] = useMutation(
+  const [createEmployee, { loading, error }] = useMutation(
     gql(createEmployeeMutation)
   );
   const [createSkillUser] = useMutation(gql(createSkillUserMutation));
@@ -41,7 +41,6 @@ const CreateEmployeeComponent = () => {
   const renderEmployeeForm = () => {
     // Props
     const formProps = {
-      data,
       defaultValues: employeeDefaultValues,
       loading,
       mutationEmployee: createEmployee,
