@@ -97,7 +97,7 @@ const TableEmployeeComponent = () => {
   });
 
   // Business logic
-  const removeEmployee = (selectedEmployee) => {
+  const removeEmployee = (selectedEmployee, resolve) => {
     const { skills: selectedSkills, id: selectedEmployeeId } = selectedEmployee;
 
     const updateCache = (client) => {
@@ -111,6 +111,7 @@ const TableEmployeeComponent = () => {
           listEmployees: { ...data.listEmployees, items: newItems },
         },
       });
+      resolve();
     };
 
     const graphqlRemoveSkillLink = (linkID) => {
@@ -162,14 +163,6 @@ const TableEmployeeComponent = () => {
         updateEmployee(rowData);
       },
     },
-    {
-      icon: "delete",
-      tooltip: "Delete",
-      disabled: deleting,
-      onClick: (event, rowData) => {
-        removeEmployee(rowData);
-      },
-    },
   ];
 
   // Props for return
@@ -178,6 +171,12 @@ const TableEmployeeComponent = () => {
     columns: state.columns,
     className: classes.chip,
     data: state.data,
+    editable: {
+      onRowDelete: (rowData) =>
+        new Promise((resolve) => {
+          return removeEmployee(rowData, resolve);
+        }),
+    },
     title: title.employeesTable,
   };
 
