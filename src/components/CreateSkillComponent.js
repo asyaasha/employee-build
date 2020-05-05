@@ -6,7 +6,8 @@ import FormButton from "./FormButton";
 import FormInput from "./FormInput";
 import Title from "./Title";
 // GraphQL imports
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import { listSkills } from "../graphql/queries";
 import { createSkill as createSkillMutation } from "../graphql/mutations";
 import gql from "graphql-tag";
 // Actions
@@ -19,8 +20,27 @@ const { title, input, button } = messages;
 const CreateSkillComponent = () => {
   // Hooks
   const { handleSubmit, reset, control } = useForm({ skillDefaultValues });
+  //const [listSkills] = useQuery(gql(listSkillsMutation));
   const [createSkill, { loading: creating, error }] = useMutation(
-    gql(createSkillMutation)
+    gql(createSkillMutation),
+    {
+      update(cache, { data: { createSkill } }) {
+        const data = cache.readQuery({
+          query: gql(listSkills),
+        });
+        const { items } = data.listSkills;
+
+        cache.writeQuery({
+          query: gql(listSkills),
+          data: {
+            listSkills: {
+              ...data.listSkills,
+              items: items.concat([createSkill]),
+            },
+          },
+        });
+      },
+    }
   );
 
   // Props for return
