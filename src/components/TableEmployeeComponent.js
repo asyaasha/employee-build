@@ -1,15 +1,12 @@
 // React imports
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 // Material UI imports
 import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import Chip from "@material-ui/core/Chip";
 // GraphQL imports
-import { useQuery, useMutation, useLazyQuery } from "react-apollo";
-import {
-  listEmployees,
-  getEmployee as getEmployeeQuery,
-} from "../graphql/queries";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import { listEmployees } from "../graphql/queries";
 import {
   deleteEmployee as deleteEmployeeMutation,
   deleteSkillUser as deleteSkillUserMutation,
@@ -35,15 +32,10 @@ const TableEmployeeComponent = () => {
   const classes = useStyles();
   // react apollo hooks
   const { loading, data, error } = useQuery(gql(listEmployees));
-  const [getEmployee, { data: dataSelected }] = useLazyQuery(
-    gql(getEmployeeQuery)
-  );
   const [deleteEmployee, { loading: deleting }] = useMutation(
     gql(deleteEmployeeMutation)
   );
-  const [deleteSkillUser, { loading: deletingSkill }] = useMutation(
-    gql(deleteSkillUserMutation)
-  );
+  const [deleteSkillUser] = useMutation(gql(deleteSkillUserMutation));
 
   const [state, setState] = useState({
     columns: [

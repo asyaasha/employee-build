@@ -8,13 +8,13 @@ import FormButton from "./FormButton";
 import FormInput from "./FormInput";
 import Title from "./Title";
 // GraphQL imports
-import { Query } from "react-apollo";
+import { useQuery } from "@apollo/react-hooks";
 import { listSkills } from "../graphql/queries";
 import gql from "graphql-tag";
 // Helpers
 import { messages } from "../constants.js";
 
-const { input, button } = messages;
+const { input, button, form } = messages;
 
 const EmployeeForm = ({
   data,
@@ -27,6 +27,9 @@ const EmployeeForm = ({
 }) => {
   // Hooks
   const { handleSubmit, reset, control } = useForm({ defaultValues });
+  const { loading: loadingSkills, data: dataSkills, error } = useQuery(
+    gql(listSkills)
+  );
 
   // Props for return
   const buttonSubmitProps = {
@@ -48,21 +51,13 @@ const EmployeeForm = ({
     placeholder: input.lastName,
   };
 
-  // TODO: update to hooks, add subscription
-  const renderSkillsMenu = (
-    <Query query={gql(listSkills)}>
-      {({ loading, data, error }) => {
-        if (loading) return <p>loading...</p>;
-        if (error) return <p>{error.message}</p>;
-        return (
-          <FormSelect
-            control={control}
-            data={data || { listSkills: { items: [] } }}
-          />
-        );
-      }}
-    </Query>
-  );
+  // TODO: add subscription
+  const renderSkillsMenu = () => {
+    if (loadingSkills) return <p>{form.loading}</p>;
+    if (error) return <p>{error.message}</p>;
+
+    return <FormSelect control={control} data={dataSkills} />;
+  };
 
   return (
     <>
@@ -75,7 +70,7 @@ const EmployeeForm = ({
         >
           <FormInput {...firstNameProps} />
           <FormInput {...lastNameProps} />
-          {renderSkillsMenu}
+          {renderSkillsMenu()}
           <div>
             <FormButton {...buttonSubmitProps}>{button.submit}</FormButton>
           </div>
@@ -86,8 +81,8 @@ const EmployeeForm = ({
 };
 
 EmployeeForm.propTypes = {
-  mutationEmployee: PropTypes.object.isRequired,
-  mutationSkillLink: PropTypes.object,
+  mutationEmployee: PropTypes.func.isRequired,
+  mutationSkillLink: PropTypes.func,
   loading: PropTypes.bool,
   submitAction: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,

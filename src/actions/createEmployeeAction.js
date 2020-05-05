@@ -4,23 +4,22 @@ import { employeeDefaultValues } from "../constants.js";
 // Action to create a new employee and a connection to skill
 const createEmployeeAction = (data, createEmployee, createLink, reset) => {
   const employeeId = generateId();
-  createEmployee
-    .execute({
-      variables: {
-        input: {
-          id: employeeId,
-          firstname: data.firstname,
-          lastname: data.lastname,
-        },
+  createEmployee({
+    variables: {
+      input: {
+        id: employeeId,
+        firstname: data.firstname,
+        lastname: data.lastname,
       },
-    })
+    },
+  })
     .then((res) => {
       const userID = res.data.createEmployee.id;
 
       const graphqlCreateSkillLink = (skillID) => {
         return new Promise((resolve, reject) => {
           resolve(
-            createLink.execute({
+            createLink({
               variables: {
                 input: {
                   id: generateId(),
