@@ -1,13 +1,19 @@
 // React imports
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // Material UI imports
 import { makeStyles } from "@material-ui/core/styles";
 import MaterialTable from "material-table";
 import Chip from "@material-ui/core/Chip";
 // GraphQL imports
-import { useQuery, useMutation } from "react-apollo";
-import { listEmployees } from "../graphql/queries";
-import { deleteEmployee as deleteEmployeeMutation } from "../graphql/mutations";
+import { useQuery, useMutation, useLazyQuery } from "react-apollo";
+import {
+  listEmployees,
+  getEmployee as getEmployeeQuery,
+} from "../graphql/queries";
+import {
+  deleteEmployee as deleteEmployeeMutation,
+  deleteSkillUser as deleteSkillUserMutation,
+} from "../graphql/mutations";
 import gql from "graphql-tag";
 // Helpers
 import { messages } from "../constants.js";
@@ -29,7 +35,15 @@ const TableEmployeeComponent = () => {
   const classes = useStyles();
   // react apollo hooks
   const { loading, data, error } = useQuery(gql(listEmployees));
-  const [deleteEmployee] = useMutation(gql(deleteEmployeeMutation));
+  const [getEmployee, { data: dataSelected }] = useLazyQuery(
+    gql(getEmployeeQuery)
+  );
+  const [deleteEmployee, { loading: deleting }] = useMutation(
+    gql(deleteEmployeeMutation)
+  );
+  const [deleteSkillUser, { loading: deletingSkill }] = useMutation(
+    gql(deleteSkillUserMutation)
+  );
 
   const [state, setState] = useState({
     columns: [
@@ -92,11 +106,10 @@ const TableEmployeeComponent = () => {
 
   // Business logic
   const removeEmployee = (selectedEmployee) => {
-    // Update UI
+    const { skills: selectedSkills, id: selectedEmployeeId } = selectedEmployee;
+
     const updateCache = (client) => {
-      const data = client.readQuery({
-        query: gql(listEmployees),
-      });
+      const data = client.readQuery({ query: gql(listEmployees) });
       const newItems = data.listEmployees.items.filter(
         (employee) => employee.id !== selectedEmployee.id
       );
@@ -107,15 +120,42 @@ const TableEmployeeComponent = () => {
         },
       });
     };
-    // Remove from the db
-    deleteEmployee({
-      variables: {
-        input: {
-          id: selectedEmployee.id,
-        },
-      },
-      update: updateCache,
+
+    const graphqlRemoveSkillLink = (linkID) => {
+      return new Promise((resolve, reject) => {
+        resolve(
+          deleteSkillUser({
+            variables: {
+              input: {
+                id: linkID,
+              },
+            },
+          })
+        );
+      });
+    };
+    // Remove connections to an employee from all skills
+    let promises = selectedSkills.items.map((skill) => {
+      return graphqlRemoveSkillLink(skill.id).then((e) => {
+        console.log(e);
+        return e;
+      });
     });
+    Promise.all(promises)
+      .then((results) => {
+        // Remove employee from the db
+        deleteEmployee({
+          variables: {
+            input: {
+              id: selectedEmployeeId,
+            },
+          },
+          update: updateCache,
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   };
 
   const updateEmployee = () => {
@@ -133,6 +173,7 @@ const TableEmployeeComponent = () => {
     {
       icon: "delete",
       tooltip: "Delete",
+      disabled: deleting,
       onClick: (event, rowData) => {
         removeEmployee(rowData);
       },

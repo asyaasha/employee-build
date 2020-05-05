@@ -48,7 +48,7 @@ const CreateSkillComponent = () => {
               >
                 <FormInput {...nameProps} />
                 <div>
-                  <FormButton {...buttonSubmitProps}>
+                  <FormButton {...buttonSubmitProps} disabled={loading}>
                     {button.submit}
                   </FormButton>
                 </div>

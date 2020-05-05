@@ -32,6 +32,7 @@ const EmployeeForm = ({
   const buttonSubmitProps = {
     className: "button-submit",
     color: "primary",
+    disabled: loading,
     size: "small",
     type: "submit",
     variant: "outlined",
@@ -47,6 +48,7 @@ const EmployeeForm = ({
     placeholder: input.lastName,
   };
 
+  // TODO: update to hooks, add subscription
   const renderSkillsMenu = (
     <Query query={gql(listSkills)}>
       {({ loading, data, error }) => {
