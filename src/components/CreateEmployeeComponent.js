@@ -5,6 +5,7 @@ import CreateSkillComponent from "./CreateSkillComponent";
 import EmployeeForm from "./EmployeeForm";
 // GraphQL imports
 import { useMutation } from "@apollo/react-hooks";
+import { listEmployees } from "../graphql/queries";
 import {
   createEmployee as createEmployeeMutation,
   createSkillUser as createSkillUserMutation,
@@ -34,7 +35,25 @@ const CreateEmployeeComponent = () => {
   // Hooks
   const classes = useStyles();
   const [createEmployee, { loading, error }] = useMutation(
-    gql(createEmployeeMutation)
+    gql(createEmployeeMutation),
+    {
+      update(cache, { data: { createEmployee } }) {
+        const data = cache.readQuery({
+          query: gql(listEmployees),
+        });
+        const { items } = data.listEmployees;
+
+        cache.writeQuery({
+          query: gql(listEmployees),
+          data: {
+            listEmployees: {
+              ...data.listEmployees,
+              items: items.concat([createEmployee]),
+            },
+          },
+        });
+      },
+    }
   );
   const [createSkillUser] = useMutation(gql(createSkillUserMutation));
 

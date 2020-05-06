@@ -115,9 +115,9 @@ const TableEmployeeComponent = ({ history }) => {
       });
       resolve();
     };
-
     // Remove connections to an employee from all skills
-    let promises = deleteSkillUserAction(selectedSkills, deleteSkillUser);
+    let promises = deleteSkillUserAction(selectedSkills.items, deleteSkillUser);
+
     Promise.all(promises)
       .then((results) => {
         // Remove employee from the db
@@ -136,7 +136,6 @@ const TableEmployeeComponent = ({ history }) => {
   };
 
   const updateEmployee = (rowData) => {
-    // TODO add edit action
     history.push(`update/${rowData.id}`);
   };
 
