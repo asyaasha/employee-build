@@ -39,7 +39,7 @@ const CreateEmployeeComponent = () => {
   const [createSkillUser] = useMutation(gql(createSkillUserMutation));
 
   // Buisness logic
-  const onSubmit = (data, resert) => {
+  const onSubmit = (data, reset) => {
     createEmployeeAction(data, createEmployee, createSkillUser, reset);
   };
 

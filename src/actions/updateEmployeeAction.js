@@ -12,6 +12,7 @@ const updateEmployeeAction = (
   deleteSkillUser
 ) => {
   const {
+    id,
     firstname: newFirstname,
     lastname: newLastname,
     skills: newSkills,
