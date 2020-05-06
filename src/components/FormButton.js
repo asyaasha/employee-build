@@ -1,5 +1,6 @@
 // React imports
 import React from "react";
+import PropTypes from "prop-types";
 // Material UI imports
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
@@ -37,6 +38,18 @@ const FormButton = ({
   );
 };
 
+FormButton.propTypes = {
+  disabled: PropTypes.bool,
+  // Style
+  className: PropTypes.string,
+  size: PropTypes.string,
+  type: PropTypes.string,
+  variant: PropTypes.string,
+  // Button children
+  children: PropTypes.string,
+  // Action
+  onClick: PropTypes.func,
+};
 FormButton.defaultProps = {
   disabled: false,
 };

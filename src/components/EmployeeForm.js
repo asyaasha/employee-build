@@ -1,6 +1,7 @@
 // React imports
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 // Components
 import FormSelect from "./FormSelect";
@@ -22,6 +23,7 @@ const EmployeeForm = ({ loading, submitAction, defaultValues, title }) => {
   const { loading: loadingSkills, data: dataSkills, error } = useQuery(
     gql(listSkills)
   );
+  let history = useHistory();
 
   // Props for return
   const buttonSubmitProps = {
@@ -30,6 +32,14 @@ const EmployeeForm = ({ loading, submitAction, defaultValues, title }) => {
     disabled: loading,
     size: "small",
     type: "submit",
+    variant: "outlined",
+  };
+  const buttonHomeProps = {
+    className: "button-home",
+    color: "default",
+    disabled: loading,
+    size: "small",
+    onClick: () => history.push("/"),
     variant: "outlined",
   };
   const firstNameProps = {
@@ -80,6 +90,7 @@ const EmployeeForm = ({ loading, submitAction, defaultValues, title }) => {
           {renderFormInputs()}
           <div>
             <FormButton {...buttonSubmitProps}>{button.submit}</FormButton>
+            <FormButton {...buttonHomeProps}>{button.home}</FormButton>
           </div>
         </form>
       </div>

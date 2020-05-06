@@ -26,9 +26,12 @@ const { title } = messages;
 // Styles
 const useStyles = makeStyles((theme) => ({
   root: {
-    paddingLeft: 24,
-    paddingTop: 18,
-    paddingBottom: 34,
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: "start",
+    color: theme.palette.text.secondary,
   },
 }));
 
@@ -54,6 +57,7 @@ const UpdateEmployeeComponent = ({ match }) => {
   const [deleteSkillUser] = useMutation(gql(deleteSkillUserMutation));
   const [createSkillUser] = useMutation(gql(createSkillUserMutation));
 
+  // Business logic
   const onSubmit = (data, reset) => {
     const {
       id,
@@ -105,14 +109,13 @@ const UpdateEmployeeComponent = ({ match }) => {
   };
 
   return (
-    <Paper className={classes.root}>
-      <Grid container display="row">
-        <Grid item xs={3}>
-          {renderEmployeeForm()}
+    <div className={classes.root}>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={6}>
+          <Paper className={classes.paper}> {renderEmployeeForm()}</Paper>
         </Grid>
-        <Grid item xs={3}></Grid>
       </Grid>
-    </Paper>
+    </div>
   );
 };
 

@@ -136,6 +136,7 @@ const TableEmployeeComponent = ({ history }) => {
   };
 
   const updateEmployee = (rowData) => {
+    // hostory from react router
     history.push(`update/${rowData.id}`);
   };
 

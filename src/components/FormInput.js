@@ -1,5 +1,6 @@
 // React imports
 import React from "react";
+import PropTypes from "prop-types";
 import { Controller } from "react-hook-form";
 // Material UI imports
 import TextField from "@material-ui/core/TextField";
@@ -13,7 +14,7 @@ const FormInput = ({ control, name, placeholder }) => {
     m: 2,
   };
   const controllerProps = {
-    as: <TextField placeholder={placeholder} />,
+    as: <TextField placeholder={placeholder} required />,
     control,
     name,
   };
@@ -25,6 +26,12 @@ const FormInput = ({ control, name, placeholder }) => {
       </FormControl>
     </Box>
   );
+};
+
+FormInput.propTypes = {
+  control: PropTypes.object,
+  name: PropTypes.string,
+  placeholder: PropTypes.string,
 };
 
 export default FormInput;

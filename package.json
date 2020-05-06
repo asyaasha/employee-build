@@ -6,14 +6,18 @@
   "scripts": {
     "start": "parcel src/index.html",
     "build": "parcel build src/index.html -d build",
-    "deploy": "build amplify publish",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "amplify publish",
+    "test": "jest"
   },
   "author": "asiya",
   "license": "ISC",
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
+    "@apollo/react-testing": "^3.0.0",
     "@aws-amplify/ui-react": "^0.2.4",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-react": "^7.9.4",
     "@date-io/core": "^1.3.13",
     "@date-io/date-fns": "^2.6.1",
     "@material-ui/core": "^4.9.12",
@@ -23,6 +27,8 @@
     "apollo-client": "^2.6.8",
     "aws-amplify": "^3.0.9",
     "aws-appsync": "^3.0.3",
+    "babel-jest": "^26.0.1",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
     "date-fns": "^2.0.0-beta.5",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.3",
@@ -43,6 +49,9 @@
   },
   "devDependencies": {
     "cssnano": "^4.1.10",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "jest": "^26.0.1",
     "parcel-bundler": "^1.12.4"
   },
   "resolutions": {

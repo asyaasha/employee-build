@@ -12,8 +12,8 @@ export const messages = {
     skillName: "Skill Name",
   },
   button: {
-    reset: "Reset",
     submit: "Submit",
+    home: "Home",
   },
   form: {
     loading: "Loading...",

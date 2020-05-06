@@ -3,3 +3,7 @@ h6 {
   line-height: 1.1;
   text-transform: "uppercase";
 }
+body {
+  margin: 0;
+  padding: 0;
+}
