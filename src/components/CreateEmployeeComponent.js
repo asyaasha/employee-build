@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
 }));
+
 const CreateEmployeeComponent = () => {
   // Hooks
   const classes = useStyles();

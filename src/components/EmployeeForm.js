@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 // Components
 import FormSelect from "./FormSelect";
-import FormButton from "./FormButton";
+import FormFooter from "./FormFooter";
 import FormInput from "./FormInput";
 import Title from "./Title";
 // GraphQL imports
@@ -15,7 +15,7 @@ import gql from "graphql-tag";
 // Helpers
 import { messages } from "../constants.js";
 
-const { input, button, form } = messages;
+const { input, form } = messages;
 
 const EmployeeForm = ({ loading, submitAction, defaultValues, title }) => {
   // Hooks
@@ -26,22 +26,6 @@ const EmployeeForm = ({ loading, submitAction, defaultValues, title }) => {
   let history = useHistory();
 
   // Props for return
-  const buttonSubmitProps = {
-    className: "button-submit",
-    color: "primary",
-    disabled: loading,
-    size: "small",
-    type: "submit",
-    variant: "outlined",
-  };
-  const buttonHomeProps = {
-    className: "button-home",
-    color: "default",
-    disabled: loading,
-    size: "small",
-    onClick: () => history.push("/"),
-    variant: "outlined",
-  };
   const firstNameProps = {
     control,
     name: "firstname",
@@ -88,10 +72,7 @@ const EmployeeForm = ({ loading, submitAction, defaultValues, title }) => {
           })}
         >
           {renderFormInputs()}
-          <div>
-            <FormButton {...buttonSubmitProps}>{button.submit}</FormButton>
-            <FormButton {...buttonHomeProps}>{button.home}</FormButton>
-          </div>
+          <FormFooter history={history} loading={loading} />
         </form>
       </div>
     </>

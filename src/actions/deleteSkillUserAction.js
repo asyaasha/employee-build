@@ -16,7 +16,6 @@ const deleteSkillUserAction = (skills, deleteSkillUser) => {
   // Remove connections to an employee from all skills
   let promises = skills.map((skill) => {
     return graphqlRemoveSkillLink(skill.id).then((e) => {
-      console.log(e);
       return e;
     });
   });
