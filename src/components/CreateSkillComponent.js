@@ -20,7 +20,6 @@ const { title, input, button } = messages;
 const CreateSkillComponent = () => {
   // Hooks
   const { handleSubmit, reset, control } = useForm({ skillDefaultValues });
-  //const [listSkills] = useQuery(gql(listSkillsMutation));
   const [createSkill, { loading: creating, error }] = useMutation(
     gql(createSkillMutation),
     {

@@ -16,14 +16,7 @@ import { messages } from "../constants.js";
 
 const { input, button, form } = messages;
 
-const EmployeeForm = ({
-  loading,
-  submitAction,
-  mutationEmployee,
-  mutationSkillLink,
-  defaultValues,
-  title,
-}) => {
+const EmployeeForm = ({ loading, submitAction, defaultValues, title }) => {
   // Hooks
   const { handleSubmit, reset, control } = useForm({ defaultValues });
   const { loading: loadingSkills, data: dataSkills, error } = useQuery(
@@ -50,7 +43,6 @@ const EmployeeForm = ({
     placeholder: input.lastName,
   };
 
-  // TODO: add subscription
   const renderSkillsMenu = () => {
     if (loadingSkills) return <p>{form.loading}</p>;
     if (error) return <p>{error.message}</p>;
@@ -64,7 +56,17 @@ const EmployeeForm = ({
     return <FormSelect {...FormSelectProps} />;
   };
 
-  if (loading) return <p>{form.loading}</p>;
+  const renderFormInputs = () => {
+    if (loading) return <p>{form.loading}</p>;
+
+    return (
+      <>
+        <FormInput {...firstNameProps} />
+        <FormInput {...lastNameProps} />
+        {renderSkillsMenu()}
+      </>
+    );
+  };
 
   return (
     <>
@@ -72,12 +74,10 @@ const EmployeeForm = ({
       <div>
         <form
           onSubmit={handleSubmit((data) => {
-            submitAction(data, mutationEmployee, mutationSkillLink, reset);
+            submitAction(data, reset);
           })}
         >
-          <FormInput {...firstNameProps} />
-          <FormInput {...lastNameProps} />
-          {renderSkillsMenu()}
+          {renderFormInputs()}
           <div>
             <FormButton {...buttonSubmitProps}>{button.submit}</FormButton>
           </div>
@@ -88,8 +88,6 @@ const EmployeeForm = ({
 };
 
 EmployeeForm.propTypes = {
-  mutationEmployee: PropTypes.func.isRequired,
-  mutationSkillLink: PropTypes.func,
   loading: PropTypes.bool,
   submitAction: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,

@@ -14,6 +14,8 @@ import {
   deleteSkillUser as deleteSkillUserMutation,
 } from "../graphql/mutations";
 import gql from "graphql-tag";
+// Actions
+import deleteSkillUserAction from "../actions/deleteSkillUserAction";
 // Helpers
 import { messages } from "../constants.js";
 
@@ -77,12 +79,12 @@ const TableEmployeeComponent = ({ history }) => {
         render: (rowData) => {
           return (
             <div>
-              {rowData.skills
+              {rowData.skills.items.length
                 ? rowData.skills.items.map((item, index) => {
                     return (
                       <Chip
-                        key={`${index}-${item.skill.id}`}
-                        label={item.skill.name.toUpperCase()}
+                        key={`${index}-${item.skillID}`}
+                        label={item.skillID.toUpperCase()}
                         className={classes.chip}
                       />
                     );
@@ -114,26 +116,8 @@ const TableEmployeeComponent = ({ history }) => {
       resolve();
     };
 
-    const graphqlRemoveSkillLink = (linkID) => {
-      return new Promise((resolve, reject) => {
-        resolve(
-          deleteSkillUser({
-            variables: {
-              input: {
-                id: linkID,
-              },
-            },
-          })
-        );
-      });
-    };
     // Remove connections to an employee from all skills
-    let promises = selectedSkills.items.map((skill) => {
-      return graphqlRemoveSkillLink(skill.id).then((e) => {
-        console.log(e);
-        return e;
-      });
-    });
+    let promises = deleteSkillUserAction(selectedSkills, deleteSkillUser);
     Promise.all(promises)
       .then((results) => {
         // Remove employee from the db

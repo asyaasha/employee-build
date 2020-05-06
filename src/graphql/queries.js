@@ -12,9 +12,6 @@ export const getEmployee = /* GraphQL */ `
           id
           skillID
           userID
-          skill {
-            name
-          }
         }
         nextToken
       }

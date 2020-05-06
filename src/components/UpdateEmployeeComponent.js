@@ -7,17 +7,19 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import { getEmployee } from "../graphql/queries";
 import {
   updateEmployee as updateEmployeeMutation,
-  updateSkillUser as updateSkillUserMutation,
+  createSkillUser as createSkillUserMutation,
+  deleteSkillUser as deleteSkillUserMutation,
 } from "../graphql/mutations";
 import gql from "graphql-tag";
 // Material UI
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
+// Actions
+import { updateEmployeeAction } from "../actions";
 
 // Helpers
 import { messages } from "../constants.js";
-import { signInButton } from "aws-amplify";
 
 const { title } = messages;
 
@@ -39,31 +41,47 @@ const UpdateEmployeeComponent = ({ match }) => {
     },
   });
   const [updateEmployee, { loading: updating, error }] = useMutation(
-    gql(updateEmployeeMutation)
+    gql(updateEmployeeMutation),
+    {
+      update(cache, { data: { updateEmployee } }) {
+        cache.writeQuery({
+          query: gql(getEmployee),
+          data: { getEmployee: updateEmployee },
+        });
+      },
+    }
   );
-  const [updateSkillUser] = useMutation(gql(updateSkillUserMutation));
+  const [deleteSkillUser] = useMutation(gql(deleteSkillUserMutation));
+  const [createSkillUser] = useMutation(gql(createSkillUserMutation));
 
-  // TODO add action
-  const updateEmployeeAction = (
-    data,
-    mutationEmployee,
-    mutationSkillLink,
-    reset
-  ) => {
-    console.log("updateEmployeeAction");
-    console.log(data);
+  const onSubmit = (data, reset) => {
+    const {
+      id,
+      skills: { items: prevSkills },
+    } = dataEmployee.getEmployee;
+    // add existing id to new data object
+    data.id = id;
+
+    updateEmployeeAction(
+      // data
+      prevSkills,
+      data,
+      // mutations
+      updateEmployee,
+      createSkillUser,
+      deleteSkillUser
+    );
   };
 
   const renderEmployeeForm = () => {
-    if (!loading && dataEmployee) {
+    if (!loading && dataEmployee && !updating) {
       const {
         firstname,
         lastname,
-        id,
         skills: { items },
       } = dataEmployee.getEmployee;
+
       const selectedEmployee = {
-        id,
         firstname,
         lastname,
         skills: items.map((item) => item.skillID),
@@ -72,10 +90,8 @@ const UpdateEmployeeComponent = ({ match }) => {
       // Props
       const formProps = {
         defaultValues: selectedEmployee,
-        loading,
-        mutationEmployee: updateEmployee,
-        mutationSkillLink: updateSkillUser,
-        submitAction: updateEmployeeAction,
+        loading: updating || loading,
+        submitAction: onSubmit,
         title: title.updateEmployee,
       };
 

@@ -1,12 +1,15 @@
+// React inputs
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { Controller } from "react-hook-form";
+// Material UI inputs
 import Input from "@material-ui/core/Input";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-
+import Chip from "@material-ui/core/Chip";
+import { makeStyles } from "@material-ui/core/styles";
+// Helpers
 import { messages } from "../constants.js";
 
 // name messages
@@ -24,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 400,
     textTransform: "uppercase",
   },
+  chip: {
+    margin: theme.spacing(0.5),
+    backgroundColor: "bisque",
+  },
 }));
 const MenuProps = {
   PaperProps: {
@@ -35,15 +42,26 @@ const MenuProps = {
   },
 };
 
-const FormSelect = ({ control, data, defaultSkills }) => {
+const FormSelect = ({ control, data }) => {
   const { listSkills } = data;
   const classes = useStyles();
 
   // Props for return
   const selectProps = {
     value: [],
-    input: <Input />,
+    input: <Input id="select-multiple-chip" />,
     MenuProps: MenuProps,
+    renderValue: (selected, index) => (
+      <div className={classes.chips}>
+        {selected.map((value) => (
+          <Chip
+            key={`${index} + ${value}`}
+            label={value}
+            className={classes.chip}
+          />
+        ))}
+      </div>
+    ),
   };
 
   return (

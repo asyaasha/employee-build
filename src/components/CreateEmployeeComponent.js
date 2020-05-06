@@ -38,14 +38,17 @@ const CreateEmployeeComponent = () => {
   );
   const [createSkillUser] = useMutation(gql(createSkillUserMutation));
 
+  // Buisness logic
+  const onSubmit = (data, resert) => {
+    createEmployeeAction(data, createEmployee, createSkillUser, reset);
+  };
+
   const renderEmployeeForm = () => {
     // Props
     const formProps = {
       defaultValues: employeeDefaultValues,
       loading,
-      mutationEmployee: createEmployee,
-      mutationSkillLink: createSkillUser,
-      submitAction: createEmployeeAction,
+      submitAction: onSubmit,
       title: title.createEmployee,
     };
 
