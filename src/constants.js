@@ -1,6 +1,7 @@
 export const messages = {
   title: {
     createEmployee: "New Employee",
+    updateEmployee: "Update Employee",
     createSkill: "New Skill",
     employeesTable: "EMPLOYEES",
   },

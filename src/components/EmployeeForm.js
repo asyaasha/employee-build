@@ -8,30 +8,26 @@ import FormButton from "./FormButton";
 import FormInput from "./FormInput";
 import Title from "./Title";
 // GraphQL imports
-import { Query } from "react-apollo";
+import { useQuery } from "@apollo/react-hooks";
 import { listSkills } from "../graphql/queries";
 import gql from "graphql-tag";
 // Helpers
 import { messages } from "../constants.js";
 
-const { input, button } = messages;
+const { input, button, form } = messages;
 
-const EmployeeForm = ({
-  data,
-  loading,
-  submitAction,
-  mutationEmployee,
-  mutationSkillLink,
-  defaultValues,
-  title,
-}) => {
+const EmployeeForm = ({ loading, submitAction, defaultValues, title }) => {
   // Hooks
   const { handleSubmit, reset, control } = useForm({ defaultValues });
+  const { loading: loadingSkills, data: dataSkills, error } = useQuery(
+    gql(listSkills)
+  );
 
   // Props for return
   const buttonSubmitProps = {
     className: "button-submit",
     color: "primary",
+    disabled: loading,
     size: "small",
     type: "submit",
     variant: "outlined",
@@ -47,20 +43,30 @@ const EmployeeForm = ({
     placeholder: input.lastName,
   };
 
-  const renderSkillsMenu = (
-    <Query query={gql(listSkills)}>
-      {({ loading, data, error }) => {
-        if (loading) return <p>loading...</p>;
-        if (error) return <p>{error.message}</p>;
-        return (
-          <FormSelect
-            control={control}
-            data={data || { listSkills: { items: [] } }}
-          />
-        );
-      }}
-    </Query>
-  );
+  const renderSkillsMenu = () => {
+    if (loadingSkills) return <p>{form.loading}</p>;
+    if (error) return <p>{error.message}</p>;
+
+    const FormSelectProps = {
+      data: dataSkills,
+      defaultSkills: defaultValues.skills,
+      control: control,
+    };
+
+    return <FormSelect {...FormSelectProps} />;
+  };
+
+  const renderFormInputs = () => {
+    if (loading) return <p>{form.loading}</p>;
+
+    return (
+      <>
+        <FormInput {...firstNameProps} />
+        <FormInput {...lastNameProps} />
+        {renderSkillsMenu()}
+      </>
+    );
+  };
 
   return (
     <>
@@ -68,12 +74,10 @@ const EmployeeForm = ({
       <div>
         <form
           onSubmit={handleSubmit((data) => {
-            submitAction(data, mutationEmployee, mutationSkillLink, reset);
+            submitAction(data, reset);
           })}
         >
-          <FormInput {...firstNameProps} />
-          <FormInput {...lastNameProps} />
-          {renderSkillsMenu}
+          {renderFormInputs()}
           <div>
             <FormButton {...buttonSubmitProps}>{button.submit}</FormButton>
           </div>
@@ -84,8 +88,6 @@ const EmployeeForm = ({
 };
 
 EmployeeForm.propTypes = {
-  mutationEmployee: PropTypes.object.isRequired,
-  mutationSkillLink: PropTypes.object,
   loading: PropTypes.bool,
   submitAction: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,

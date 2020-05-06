@@ -6,8 +6,9 @@ import FormButton from "./FormButton";
 import FormInput from "./FormInput";
 import Title from "./Title";
 // GraphQL imports
-import { Mutation } from "react-apollo";
-import { createSkill } from "../graphql/mutations";
+import { useMutation, useQuery } from "@apollo/react-hooks";
+import { listSkills } from "../graphql/queries";
+import { createSkill as createSkillMutation } from "../graphql/mutations";
 import gql from "graphql-tag";
 // Actions
 import createSkillAction from "../actions/createSkillAction";
@@ -19,6 +20,27 @@ const { title, input, button } = messages;
 const CreateSkillComponent = () => {
   // Hooks
   const { handleSubmit, reset, control } = useForm({ skillDefaultValues });
+  const [createSkill, { loading: creating, error }] = useMutation(
+    gql(createSkillMutation),
+    {
+      update(cache, { data: { createSkill } }) {
+        const data = cache.readQuery({
+          query: gql(listSkills),
+        });
+        const { items } = data.listSkills;
+
+        cache.writeQuery({
+          query: gql(listSkills),
+          data: {
+            listSkills: {
+              ...data.listSkills,
+              items: items.concat([createSkill]),
+            },
+          },
+        });
+      },
+    }
+  );
 
   // Props for return
   const buttonSubmitProps = {
@@ -37,27 +59,21 @@ const CreateSkillComponent = () => {
   return (
     <>
       <Title title={title.createSkill} />
-      <Mutation mutation={gql(createSkill)}>
-        {(createSkill, { data, loading, error }) => {
-          return (
-            <div>
-              <form
-                onSubmit={handleSubmit((data) => {
-                  createSkillAction(data, createSkill, reset);
-                })}
-              >
-                <FormInput {...nameProps} />
-                <div>
-                  <FormButton {...buttonSubmitProps}>
-                    {button.submit}
-                  </FormButton>
-                </div>
-              </form>
-              {error && <p>{error.message}</p>}
-            </div>
-          );
-        }}
-      </Mutation>
+      <div>
+        <form
+          onSubmit={handleSubmit((data) => {
+            createSkillAction(data, createSkill, reset);
+          })}
+        >
+          <FormInput {...nameProps} />
+          <div>
+            <FormButton {...buttonSubmitProps} disabled={creating}>
+              {button.submit}
+            </FormButton>
+          </div>
+        </form>
+        {error && <p>{error.message}</p>}
+      </div>
     </>
   );
 };

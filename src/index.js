@@ -7,7 +7,7 @@ import gql from "graphql-tag";
 import AWSAppSyncClient, { AUTH_TYPE } from "aws-appsync";
 import awsExports from "./aws-exports";
 import { ApolloLink } from "apollo-link";
-import { ApolloProvider } from "react-apollo";
+import { ApolloProvider } from "@apollo/react-hooks";
 import { createAuthLink } from "aws-appsync-auth-link";
 import { createHttpLink } from "apollo-link-http";
 import ApolloClient from "apollo-client";

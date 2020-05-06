@@ -1,47 +1,31 @@
+import React from "react";
 import generateId from "../util.js";
 import { employeeDefaultValues } from "../constants.js";
+import createSkillUserAction from "./createSkillUserAction";
 
-// Action to create a new employee and a connection to skill
-const createEmployeeAction = (data, createEmployee, createLink, reset) => {
+// Action to create a new employee and connections to skills
+const createEmployeeAction = (data, createEmployee, createSkillUser, reset) => {
   const employeeId = generateId();
-  createEmployee
-    .execute({
-      variables: {
-        input: {
-          id: employeeId,
-          firstname: data.firstname,
-          lastname: data.lastname,
-        },
+  createEmployee({
+    variables: {
+      input: {
+        id: employeeId,
+        firstname: data.firstname,
+        lastname: data.lastname,
       },
-    })
+    },
+  })
     .then((res) => {
       const userID = res.data.createEmployee.id;
+      let promises = createSkillUserAction(
+        data.skills,
+        employeeId,
+        createSkillUser
+      );
 
-      const graphqlCreateSkillLink = (skillID) => {
-        return new Promise((resolve, reject) => {
-          resolve(
-            createLink.execute({
-              variables: {
-                input: {
-                  id: generateId(),
-                  userID,
-                  skillID,
-                },
-              },
-            })
-          );
-        });
-      };
-      // Create connections to an employee for all selected skills
-      let promises = data.skills.map((skill) => {
-        return graphqlCreateSkillLink(skill).then((e) => {
-          console.log(e);
-          return e;
-        });
-      });
       Promise.all(promises)
         .then((results) => {
-          // reset form to default
+          // reset form to default values
           reset(employeeDefaultValues);
         })
         .catch((e) => {

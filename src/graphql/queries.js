@@ -31,9 +31,9 @@ export const listEmployees = /* GraphQL */ `
         lastname
         skills {
           items {
-            skill {
-              name
-            }
+            id
+            skillID
+            userID
           }
           nextToken
         }

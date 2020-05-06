@@ -3,9 +3,12 @@ import React from "react";
 // Components
 import CreateSkillComponent from "./CreateSkillComponent";
 import EmployeeForm from "./EmployeeForm";
-import MultipleMutations from "./MultipleMutations";
 // GraphQL imports
-import { createEmployee, createSkillUser } from "../graphql/mutations";
+import { useMutation } from "@apollo/react-hooks";
+import {
+  createEmployee as createEmployeeMutation,
+  createSkillUser as createSkillUserMutation,
+} from "../graphql/mutations";
 import gql from "graphql-tag";
 // Material UI
 import Grid from "@material-ui/core/Grid";
@@ -30,42 +33,38 @@ const useStyles = makeStyles((theme) => ({
 const CreateEmployeeComponent = () => {
   // Hooks
   const classes = useStyles();
-
-  const renderEmployeeForm = (
-    <MultipleMutations
-      mutations={[
-        { mutation: gql(createEmployee) },
-        { mutation: gql(createSkillUser) },
-      ]}
-    >
-      {([mutationEmployee, mutationSkillLink]) => {
-        const { data, loading, error } = mutationEmployee;
-        // Props
-        const formProps = {
-          data,
-          defaultValues: employeeDefaultValues,
-          loading,
-          mutationEmployee,
-          mutationSkillLink,
-          submitAction: createEmployeeAction,
-          title: title.createEmployee,
-        };
-
-        return (
-          <>
-            <EmployeeForm {...formProps} />
-            {error && <p>{error.message}</p>}
-          </>
-        );
-      }}
-    </MultipleMutations>
+  const [createEmployee, { loading, error }] = useMutation(
+    gql(createEmployeeMutation)
   );
+  const [createSkillUser] = useMutation(gql(createSkillUserMutation));
+
+  // Buisness logic
+  const onSubmit = (data, resert) => {
+    createEmployeeAction(data, createEmployee, createSkillUser, reset);
+  };
+
+  const renderEmployeeForm = () => {
+    // Props
+    const formProps = {
+      defaultValues: employeeDefaultValues,
+      loading,
+      submitAction: onSubmit,
+      title: title.createEmployee,
+    };
+
+    return (
+      <>
+        <EmployeeForm {...formProps} />
+        {error && <p>{error.message}</p>}
+      </>
+    );
+  };
 
   return (
     <Paper className={classes.root}>
       <Grid container display="row">
         <Grid item xs={3}>
-          {renderEmployeeForm}
+          {renderEmployeeForm()}
         </Grid>
         <Grid item xs={3}>
           <CreateSkillComponent />

@@ -5,20 +5,20 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 
 const FormButton = ({
+  disabled,
   // Style
-  size,
-  variant,
   className,
+  size,
   type,
-
+  variant,
   // Button children
   children,
-
   // Action
   onClick,
 }) => {
   // Props for return
   const buttonProps = {
+    disabled,
     variant,
     className: `${className} btn-${variant} btn-${size}`,
     size,
@@ -35,6 +35,10 @@ const FormButton = ({
       <Button {...buttonProps}>{children}</Button>
     </Box>
   );
+};
+
+FormButton.defaultProps = {
+  disabled: false,
 };
 
 export default FormButton;
