@@ -5,7 +5,7 @@ Test Challenge - Employee Builder, lets you create employees and assign skills t
 ## Getting Started
 
 to test the deployed project use this url 
-https://buildopsest-20200505211854-hostingbucket-dev.s3.amazonaws.com/
+https://buildopsest-20200505211854-hostingbucket-dev.s3.amazonaws.com/index.html
 
 to run the project locally:
 
