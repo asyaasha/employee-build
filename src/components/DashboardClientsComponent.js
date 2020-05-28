@@ -171,122 +171,35 @@ const DashboardClientsComponent = ({ history }) => {
   //data.listEmployees.items;
   const title = "";
 
+  const cardItem = (
+    <div className="card_item">
+      <div className="card_inner">
+        <div className="card_bottom">
+          <div className="card_category">{title}</div>
+          <div className="card_info">
+            <p className="title">Last talked..</p>
+            <p>
+              <img alt="Ava" src={ava} />
+            </p>
+          </div>
+          <div className="card_creator">Mark from Company B</div>
+        </div>
+      </div>
+    </div>
+  );
+
   const renderCards = () => {
     return (
-      <div class="wrapper">
-        <div class="cards_wrap">
-          <div class="card_item">
-            <div class="card_inner">
-              <div class="card_bottom">
-                <div class="card_category">{title}</div>
-                <div class="card_info">
-                  <p class="title">Last talked..</p>
-                  <p>
-                    <img alt="Ava" src={ava} />
-                  </p>
-                </div>
-                <div class="card_creator">Jack from Uber</div>
-              </div>
-            </div>
-          </div>
-          <div class="card_item">
-            <div class="card_inner">
-              <div class="card_bottom">
-                <div class="card_category"></div>
-                <div class="card_info">
-                  <p class="title">Last talked...</p>
-                  <p>
-                    <img alt="Ava" src={ava} />
-                  </p>
-                </div>
-                <div class="card_creator">Kate from Uber</div>
-              </div>
-            </div>
-          </div>
-          <div class="card_item">
-            <div class="card_inner">
-              <div class="card_bottom">
-                <div class="card_category">{title}</div>
-                <div class="card_info">
-                  <p class="title">Last talked..</p>
-                  <p>
-                    <img alt="Ava" src={ava} />
-                  </p>
-                </div>
-                <div class="card_creator">Kate from Uber</div>
-              </div>
-            </div>
-          </div>
-          <div class="card_item">
-            <div class="card_inner">
-              <div class="card_bottom">
-                <div class="card_category">{title}</div>
-                <div class="card_info">
-                  <p class="title">Last talked..</p>
-                  <p>
-                    <img alt="Ava" src={ava} />
-                  </p>
-                </div>
-                <div class="card_creator">Mark from Company B</div>
-              </div>
-            </div>
-          </div>
-          <div class="card_item">
-            <div class="card_inner">
-              <div class="card_bottom">
-                <div class="card_category">{title}</div>
-                <div class="card_info">
-                  <p class="title">Last talked..</p>
-                  <p>
-                    <img alt="Ava" src={ava} />
-                  </p>
-                </div>
-                <div class="card_creator">Mark from Company B</div>
-              </div>
-            </div>
-          </div>
-          <div class="card_item">
-            <div class="card_inner">
-              <div class="card_bottom">
-                <div class="card_category">{title}</div>
-                <div class="card_info">
-                  <p class="title">Last talked..</p>
-                  <p>
-                    <img alt="Ava" src={ava} />
-                  </p>
-                </div>
-                <div class="card_creator">Mark from Company B</div>
-              </div>
-            </div>
-          </div>
-          <div class="card_item">
-            <div class="card_inner">
-              <div class="card_bottom">
-                <div class="card_category">{title}</div>
-                <div class="card_info">
-                  <p class="title">Last talked..</p>
-                  <p>
-                    <img alt="Ava" src={ava} />
-                  </p>
-                </div>
-                <div class="card_creator">Mark from Company B</div>
-              </div>
-            </div>
-          </div>
-          <div class="card_item">
-            <div class="card_inner">
-              <div class="card_bottom">
-                <div class="card_category">{title}</div>
-                <div class="card_info">
-                  <p class="title">Last talked..</p>
-                  <p>
-                    <img alt="Ava" src={ava} />
-                  </p>
-                </div>
-                <div class="card_creator">Mark from Company B</div>
-              </div>
-            </div>
-          </div>
+      <div className="wrapper">
+        <div className="cards_wrap">
+          {cardItem}
+          {cardItem}
+          {cardItem}
+          {cardItem}
+          {cardItem}
+          {cardItem}
+          {cardItem}
+          {cardItem}
         </div>
       </div>
     );

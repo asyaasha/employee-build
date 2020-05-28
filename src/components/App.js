@@ -140,24 +140,20 @@ const App = (props) => {
           >
             <MenuIcon />
           </IconButton>
-          <IconButton edge="end" aria-label="icon">
-            <FaceIcon size="medium" className={classes.icon} />{" "}
-            <Typography className={classes.typoLight} variant="h6">
-              &nbsp;EMP
-            </Typography>
-            <Typography className={classes.typoDark} variant="h6">
-              AVA
-            </Typography>
-          </IconButton>
-          <Typography className={classes.topLink} variant="h8">
-            FILTER
-          </Typography>
-          <Typography className={classes.topLink} variant="h8">
-            ORGANISE
-          </Typography>
-          <Typography className={classes.topLink} variant="h8">
-            SHARE ROOM
-          </Typography>
+          <Link to="/">
+            <IconButton edge="end" aria-label="icon">
+              <FaceIcon size="medium" className={classes.icon} />{" "}
+              <Typography className={classes.typoLight} variant="h6">
+                &nbsp;EMP
+              </Typography>
+              <Typography className={classes.typoDark} variant="h6">
+                AVA
+              </Typography>
+            </IconButton>
+          </Link>
+          <Typography className={classes.topLink}>FILTER</Typography>
+          <Typography className={classes.topLink}>ORGANISE</Typography>
+          <Typography className={classes.topLink}>SHARE ROOM</Typography>
           <Link to="/create">
             <Tooltip title="Add Client" aria-label="add-client">
               <IconButton
@@ -217,4 +213,4 @@ const App = (props) => {
   );
 };
 
-export default WithRouter(App);
+export default withRouter(App);
