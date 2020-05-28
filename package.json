@@ -1,7 +1,7 @@
 {
-  "name": "buildops_test",
+  "name": "empava",
   "version": "1.0.0",
-  "description": "test for buildOps",
+  "description": "Empava",
   "main": "index.js",
   "scripts": {
     "start": "parcel src/index.html",

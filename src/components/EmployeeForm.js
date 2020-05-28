@@ -36,7 +36,11 @@ const EmployeeForm = ({ loading, submitAction, defaultValues, title }) => {
     name: "lastname",
     placeholder: input.lastName,
   };
-
+  const companyProps = {
+    control,
+    name: "company",
+    placeholder: "Company",
+  };
   const renderSkillsMenu = () => {
     if (loadingSkills) return <p>{form.loading}</p>;
     if (error) return <p>{error.message}</p>;
@@ -57,7 +61,7 @@ const EmployeeForm = ({ loading, submitAction, defaultValues, title }) => {
       <>
         <FormInput {...firstNameProps} />
         <FormInput {...lastNameProps} />
-        {renderSkillsMenu()}
+        <FormInput {...companyProps} />
       </>
     );
   };

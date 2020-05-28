@@ -27,6 +27,8 @@ const { title } = messages;
 // Styles
 const useStyles = makeStyles((theme) => ({
   root: {
+    marginTop: 100,
+    paddingLeft: 40,
     flexGrow: 1,
   },
   paper: {
@@ -73,7 +75,7 @@ const CreateEmployeeComponent = () => {
       defaultValues: employeeDefaultValues,
       loading,
       submitAction: onSubmit,
-      title: title.createEmployee,
+      title: "Add New Client",
     };
 
     return (
@@ -87,15 +89,7 @@ const CreateEmployeeComponent = () => {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6}>
-          <Paper className={classes.paper}> {renderEmployeeForm()}</Paper>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Paper className={classes.paper}>
-            {" "}
-            <CreateSkillComponent />
-          </Paper>
-        </Grid>
+        <Paper className={classes.paper}> {renderEmployeeForm()}</Paper>
       </Grid>
     </div>
   );
