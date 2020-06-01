@@ -46,17 +46,18 @@ const Header = () => {
               <IconButton edge="end" color="inherit" aria-label="icon">
                 <FaceIcon size="medium" className={classes.icon} />{" "}
                 <Typography className={classes.typoLight} variant="h6">
-                  &nbsp;EMPA
+                  &nbsp;EMPLOYEES
                 </Typography>
                 <Typography className={classes.typoDark} variant="h6">
-                  VA
+                  {" "}
+                  &nbsp;BUILDER
                 </Typography>
               </IconButton>
             </Link>
           </Grid>
           <Grid item>
             <Link to="/create">
-              <Tooltip title="Add Client" aria-label="add-client">
+              <Tooltip title="Add Employee" aria-label="add-employee">
                 <IconButton
                   className={classes.icon}
                   size="medium"
